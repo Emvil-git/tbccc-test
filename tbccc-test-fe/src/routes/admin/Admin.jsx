@@ -5,7 +5,7 @@ import AdminProductDisclosure from './AdminProductDisclosure';
 import AdminOrderDisclosure from './AdminOrderDisclosure';
 import { useAppContext } from '../../context/appContext';
 
-const classNames = (...classes) => {
+export const classNames = (...classes) => {
   return classes.filter(Boolean).join(' ')
 }
 

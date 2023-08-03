@@ -1,7 +1,25 @@
-import React from 'react'
-import { Disclosure } from '@headlessui/react'
+import React, { useState } from 'react';
+import { Disclosure } from '@headlessui/react';
+import { classNames } from './Admin';
 
 function AdminProductDisclosure({product}) {
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [pName, setPName] = useState(product.productName);
+    const [pDesc, setPDesc] = useState(product.description);
+    const [pPrice, setPPrice] = useState(product.price);
+    const [pStocks, setPStocks] = useState(product.productQuantity);
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        setIsEditing(false)
+    }
+
+    const handleEdit = (event) => {
+        event.preventDefault();
+        setIsEditing(true)
+    }
+
   return (
     <Disclosure
         as="div"
@@ -11,31 +29,80 @@ function AdminProductDisclosure({product}) {
             <span className='text-blue-700'>{product.productName}</span>
             <span className='text-sm text-slate-400'>{product._id}</span>
         </Disclosure.Button>
-        <Disclosure.Panel className="bg-slate-100 py-3 pt-4 px-6 text-sm rounded-b-lg z-10">
-            <section className='mb-2'>
-                <p className='text-blue-400 me-3 text-xs'>Product Name</p>
-                <p className='w-4/5'>{product.productName}</p>
+        <Disclosure.Panel
+        as='form'
+        className="bg-slate-100 py-3 pt-4 px-6 text-sm rounded-b-lg z-10"
+        >
+             <section className='mb-2 flex flex-col'>
+                <label htmlFor='productName' className='text-blue-400 me-3 text-xs'>Product Name</label>
+                <input
+                    type='text'
+                    id='productName'
+                    className={classNames('focus:outline-none transition-all ease-out duration-75' ,isEditing ? 'bg-slate-200 px-4 py-1 rounded mt-1 focus:shadow-md focus:bg-white' : 'bg-slate-100 cursor-default')}
+                    readOnly={!isEditing}
+                    placeholder="Enter product name"
+                    value={pName}
+                    required
+                    onChange={(ev) => {setPName(ev.target.value)}}/>
             </section>
-            <section className='mb-4'>
-                <p className='text-blue-400 me-3 text-xs'>Description</p>
-                <p >{product.description}</p>
+
+             <section className='mb-4 flex flex-col'>
+                <label htmlFor='description' className='text-blue-400 me-3 text-xs'>Description</label>
+                {isEditing ? 
+                    <textarea
+                    type='text'
+                    id='description'
+                    className='focus:outline-none bg-slate-200 px-4 py-1 rounded mt-1 focus:shadow-md focus:bg-white resize-none transition-all ease-out duration-75'
+                    rows={3}
+                    placeholder="Enter product name"
+                    value={pDesc}
+                    required
+                    onChange={(ev) => {setPDesc(ev.target.value)}}/> :
+                    <p >{product.description}</p>
+                }
             </section>
-            <div className='flex justify-between w-1/4'>
-                <section className='mb-2'>
-                    <p className='text-blue-400 me-3 text-xs'>Price</p>
-                    <p>{product.price}</p>
+            
+            <div className='flex gap-4 justify-between w-1/4 mb-4'>
+                <section>
+                    <label htmlFor='productName' className='text-blue-400 me-3 text-xs'>Price</label>
+                    <input
+                        type='number'
+                        id='productName'
+                        className={classNames('focus:outline-none transition-all ease-out duration-75' ,isEditing ? 'bg-slate-200 px-4 py-1 rounded mt-1 focus:shadow-md focus:bg-white' : 'bg-slate-100 cursor-default')}
+                        readOnly={!isEditing}
+                        placeholder="Enter product name"
+                        value={pPrice}
+                        required
+                        onChange={(ev) => {setPPrice(ev.target.value)}}/>
                 </section>
-                <section className='mb-2'>
-                    <p className='text-blue-400 me-3 text-xs'>Stock</p>
-                    <p>{product.productQuantity}</p>
+                <section>
+                    <label htmlFor='productName' className='text-blue-400 me-3 text-xs'>Stock</label>
+                    <input
+                        type='number'
+                        id='productName'
+                        className={classNames('focus:outline-none transition-all ease-out' ,isEditing ? 'bg-slate-200 px-4 py-1 rounded mt-1 focus:shadow-md focus:bg-white' : 'bg-slate-100 cursor-default')}
+                        readOnly={!isEditing}
+                        placeholder="Enter product name"
+                        value={pStocks}
+                        required
+                        onChange={(ev) => {setPStocks(ev.target.value)}}/>
                 </section>
             </div>
             <div className='flex'> 
-                <button
-                    className='border border-slate-800 bg-slate-800 text-slate-50 text-slate-50 rounded-md px-4 py-1 mt-2 mb-2 me-2'
-                >
-                    Edit Info
-                </button>
+                {
+                    isEditing ? <button
+                        onClick={handleSubmit}
+                        className='border border-slate-800 bg-slate-800 text-slate-50 text-slate-50 rounded-md px-4 py-1 mt-2 mb-2 me-2'
+                    >
+                        Update Info
+                    </button> : 
+                    <button
+                        onClick={handleEdit}
+                        className='border border-slate-800 bg-slate-800 text-slate-50 text-slate-50 rounded-md px-4 py-1 mt-2 mb-2 me-2'
+                    >
+                        Edit Info
+                    </button>
+                }
                 <button
                     className='border border-slate-800 text-slate-800 text-slate-50 rounded-md px-4 py-1 mt-2 mb-2'
                 >
