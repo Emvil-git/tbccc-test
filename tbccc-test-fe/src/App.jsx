@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       <Router>
-        <main className='body-font font-quicksand'>
+        <main className='body-font font-quicksand text-slate-800 bg-slate-50 h-screen'>
           <Navbar/>
           <Routes>
             <Route path="/" element={<Home/>}/>
