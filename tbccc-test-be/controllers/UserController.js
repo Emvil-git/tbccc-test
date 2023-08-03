@@ -182,12 +182,12 @@ module.exports.adminDeleteAccount = async (request,response) => {
 
 // user log in
 module.exports.logIn = (request, response) => {
-    return User.findOne({username: request.body.username}).then(
+    return User.findOne({email: request.body.email}).then(
         result => {
             if (result == null) {
                 return response.send({
                     "status": 404,
-                    "message": "Username does not exist"
+                    "message": "Email not in use"
                 })
             }
             else {
