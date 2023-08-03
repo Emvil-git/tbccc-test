@@ -1,5 +1,6 @@
-import React from 'react'
-import { Tab } from '@headlessui/react'
+import React from 'react';
+import { Tab } from '@headlessui/react';
+import AdminUserDisclosure from './AdminUserDisclosure';
 
 const classNames = (...classes) => {
   return classes.filter(Boolean).join(' ')
@@ -35,10 +36,34 @@ function Admin() {
                     )}
                 </Tab.List>
             </div>
-            <Tab.Panels className="h-screen pt-16">
-              <Tab.Panel>Content 1</Tab.Panel>
-              <Tab.Panel>Content 2</Tab.Panel>
-              <Tab.Panel>Content 3</Tab.Panel>
+            <Tab.Panels className="pt-24 ps-12 pe-24 bg-slate-50 w-full h-full overflow-y-auto">
+              <Tab.Panel>
+                <div
+                    className='w-2/3'
+                >
+                    <h3 className='font-medium text-3xl mb-4'>Users</h3>
+                    <div className='flex flex-col gap-2'>
+                        <AdminUserDisclosure/>
+                        <AdminUserDisclosure/>
+                        <AdminUserDisclosure/>
+                        <AdminUserDisclosure/>
+                        <AdminUserDisclosure/>
+                        <AdminUserDisclosure/>
+                    </div>
+                </div>
+              </Tab.Panel>
+              <Tab.Panel>
+                <div
+                >
+                    <h3 className='font-medium text-3xl'>Products</h3>
+                </div>
+              </Tab.Panel>
+              <Tab.Panel>
+                <div
+                >
+                    <h3 className='font-medium text-3xl'>Orders</h3>
+                </div>
+              </Tab.Panel>
             </Tab.Panels>
         </Tab.Group>
   )
