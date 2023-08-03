@@ -1,6 +1,7 @@
 const User = require("../models/User.js");
 const bcrypt = require("bcrypt");
 const auth = require("../auth.js");
+const Product = require("../models/Product.js");
 
 module.exports.signUp = async (request, response) => {
     let newUser = new User({
@@ -175,6 +176,259 @@ module.exports.adminDeleteAccount = async (request,response) => {
         return response.send({
             "status":403,
             "message": "This is an ADMIN-ONLY feature"
+        })
+    }
+}
+
+// Functions for adding to cart
+module.exports.addToCart = async (request, response) => {
+    const userData = auth.decode(request.headers.authorization);
+
+    const {productId, quantity} = request.body;
+
+    if (!userData.isadmin){
+        await User.findById(userData.id)
+        .then(async user => {
+            let product = await Product.findById(productId).then(result => result)
+            .catch(error => {
+                return response.send({
+                    "status":404,
+                    "message":"Product not found"
+                })
+            });
+
+            if (!product || !product.isListed || !product.stocks || product.stocks - quantity <= 0){
+                return response.send({
+                    "status":500,
+                    "message":"Product can't be added to cart"
+                })
+            } else {
+                const index = user.cart.map(item => item.productId).indexOf(product.id);
+
+                if (index === -1) {
+                    user.cart.push({
+                        productId: productId,
+                        quantity: quantity,
+                        subTotal: product.price * quantity
+                    });
+                    
+                } else {
+                    user.cart[index].quantity += quantity;
+                    user.cart[index].subTotal = product.price * quantity;
+                }
+
+                user.save();
+
+                return response.send(user);
+            }
+
+        }).catch(error => {
+            return response.send({
+                "status":404,
+                "message":"User not found"
+            })
+        })
+
+    } else {
+        return response.send({
+            "status":403,
+            "message":"Adding to cart is a CUSTOMER-ONLY feature"
+        })
+    }
+}
+
+module.exports.updateProductCartQuantity = async (request, response) => {
+    const user = auth.decode(request.headers.authorization);
+
+    const {productId, quantity} = request.body;
+
+    if (!user.isadmin){
+        await User.findById(user.id)
+        .then(async user => {       
+            if (user.cart.length === 0) return response.send('Cart is empty') 
+
+            let product = await Product.findById(productId).then(result => result)
+            .catch(error => {
+                return response.send({
+                    "status":404,
+                    "message":"Product not found"
+                })
+            });
+
+            if (!product || !product.isListed || !product.stocks || product.stocks - quantity <= 0){
+                return response.send({
+                    "status":500,
+                    "message":"Product can't be added to cart"
+                })
+            } else {
+
+                const index = user.cart.map(item => item.productId).indexOf(product.id);
+
+                if (index === -1) {
+                    return response.send({
+                        "status": 404,
+                        "message" : "Item not in cart"
+                    });
+                } else {
+                    user.cart[index].quantity = quantity;
+                    user.cart[index].subTotal = product.price * quantity;
+                }
+
+                user.save();
+
+                return response.send(user);
+            }
+
+        }).catch(error => {
+            return response.send({
+                "status":404,
+                "message":"User not found"
+            })
+        })
+
+    } else {
+        return response.send({
+            "status":403,
+            "message":"Changing cart product is a CUSTOMER-ONLY feature"
+        })
+    }
+}
+
+module.exports.removeFromCart = async (request, response) => {
+    const user = auth.decode(request.headers.authorization);
+
+    const {productId} = request.body;
+
+    if (!user.isadmin){
+        await User.findById(user.id)
+        .then(async user => {
+            if (user.cart.length === 0) return response.send(false) 
+
+            let product = await Product.findById(productId).then(result => result)
+            .catch(error => {
+                return response.send({
+                    "status":500,
+                    "message":"Error retrieving product"
+                })
+            });
+
+            if (!product || !product.isListed){
+                return response.send({
+                    "status":404,
+                    "message":"Product not found"
+                })
+            } else {
+                const index = user.cart.map(item => item.productId).indexOf(product.id);
+
+                if (index === -1) {
+                    return response.send({
+                        "status": 404,
+                        "message" : "Item not in cart"
+                    });
+                } else {
+                    user.cart.splice(index, 1);
+                }
+
+                user.save();
+
+                return response.send(user);
+            }
+
+        }).catch(error => {
+            return response.send({
+                "status":404,
+                "message":"User not found"
+            })
+        })
+
+    } else {
+        return response.send({
+            "status":403,
+            "message":"Removing cart product is a CUSTOMER-ONLY feature"
+        })
+    }
+}
+
+module.exports.getItemSubtotal = async (request, response) => {
+    const user = auth.decode(request.headers.authorization);
+
+    const {productId} = request.body;
+
+    if (!user.isadmin){
+        await User.findById(user.id)
+        .then(async user => {
+            
+            if (user.cart.length === 0) return response.send('Cart is empty') 
+
+            let product = await Product.findById(productId).then(result => {
+                result}).catch(error => {
+                return response.send({
+                    "status":404,
+                    "message":"Product not found"
+                })
+            });
+
+            if (!product || !product.isListed){
+                return response.send({
+                    "status":404,
+                    "message":"Product not found"
+                })
+            } else {
+                const index = user.cart.map(item => item.productId).indexOf(product.id);
+
+                if (index === -1) {
+                    return response.send({
+                        "status": 404,
+                        "message" : "Item not in cart"
+                    });
+                } else {
+                    return response.send({"item_subtotal" : user.cart[index].subTotal});
+                }
+            }
+
+        }).catch(error => {
+            return response.send({
+                "status":404,
+                "message":"User not found"
+            })
+        })
+
+    } else {
+        return response.send({
+            "status":403,
+            "message":"Removing cart product is a CUSTOMER-ONLY feature"
+        })
+    }
+}
+
+module.exports.getCartTotal = async (request, response) => {
+    const user = auth.decode(request.headers.authorization);
+
+    if (!user.isadmin){
+        await User.findById(user.id)
+        .then(async user => {
+            
+            if (user.cart.length === 0) return response.send('Cart is empty') 
+
+            let totalPrice = 0;
+
+            user.cart.forEach(
+                item => 
+                totalPrice += item.subTotal
+            )
+            response.send({"cart_total" : totalPrice});
+
+        }).catch(error => {
+                return response.send({
+                "status":404,
+                "message":"User not found"
+            })
+        })
+
+    } else {
+        return response.send({
+            "status":403,
+            "message":"Removing cart product is a CUSTOMER-ONLY feature"
         })
     }
 }
