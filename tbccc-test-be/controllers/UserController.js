@@ -352,7 +352,7 @@ module.exports.removeFromCart = async (request, response) => {
 module.exports.getItemSubtotal = async (request, response) => {
     const user = auth.decode(request.headers.authorization);
 
-    const {productId} = request.body;
+    const productId = request.params.productId;
 
     if (!user.isadmin){
         await User.findById(user.id)
