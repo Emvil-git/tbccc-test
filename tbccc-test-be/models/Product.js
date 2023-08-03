@@ -23,7 +23,7 @@ const productSchema = new mongoose.Schema(
 			required: [true, "Quantity (Product) is required"]
 		},
 
-        productIsActive: {
+        isListed: {
 			type: Boolean,
 			default: true
 		}		

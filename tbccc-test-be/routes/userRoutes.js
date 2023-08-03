@@ -16,6 +16,9 @@ router.patch("/changePass", userController.changeUserPassword);
 router.delete("/deleteUser", userController.deleteUserAccount);
 router.delete("/adminDeleteUser", userController.adminDeleteAccount);
 
+// Login
+router.post("/logIn", userController.logIn);
+
 // Cart Endpoint
 router.post("cart/add", userController.addToCart);
 router.patch("cart/updateItemQty", userController.updateProductCartQuantity);

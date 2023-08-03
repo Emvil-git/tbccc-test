@@ -180,6 +180,34 @@ module.exports.adminDeleteAccount = async (request,response) => {
     }
 }
 
+// user log in
+module.exports.logIn = (request, response) => {
+    return User.findOne({username: request.body.username}).then(
+        result => {
+            if (result == null) {
+                return response.send({
+                    "status": 404,
+                    "message": "Username does not exist"
+                })
+            }
+            else {
+                const isPasswordCorrect = bcrypt.compareSync(request.body.password, result.password);
+
+                if(isPasswordCorrect) {
+                    response.send({access: auth.createAccessToken(result)});
+                } else {
+                    return response.send({
+                        "status": 403,
+                        "message": "Password Incorrect"
+                    })
+                }
+            } 
+
+            
+        }
+    )
+}
+
 // Functions for adding to cart
 module.exports.addToCart = async (request, response) => {
     const userData = auth.decode(request.headers.authorization);
