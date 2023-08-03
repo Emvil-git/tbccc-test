@@ -5,6 +5,7 @@ const cors = require("cors");
 
 // Route imports
 const userRoutes = require("./routes/userRoutes.js");
+const productRoutes = require("./routes/pserRoutes.js");
 
 // Set Up Express
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.urlencoded({extended:true}));
 
 // Set up routes
 app.use("/users", userRoutes);
+app.use("/products", productRoutes);
 
 // Connect to MongoDB
 mongoose.connect("mongodb+srv://admin:admin@batch230.cqzdm3c.mongodb.net/tbccc-test-be?retryWrites=true&w=majority", {

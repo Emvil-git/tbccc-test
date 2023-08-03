@@ -139,7 +139,7 @@ module.exports.listProduct = (request, response) => {
     const authData = auth.decode(request.headers.authorization);
 
 	if(authData.isAdmin){
-		return Product.findByIdAndUpdate(request.params.prodId,
+		return Product.findByIdAndUpdate(request.params.productId,
 			{
 				isListed: true
 			}
@@ -166,7 +166,7 @@ module.exports.deleteProduct = async (request,response) => {
     const authData = auth.decode(request.headers.authorization)
 
     if (authData.isAdmin === true) {
-        Product.findByIdAndDelete(request.params.prodId).then((result)=>{
+        Product.findByIdAndDelete(request.params.productId).then((result)=>{
             return response.send({
                 "status":200,
                 "message": "Account deletion successful"
