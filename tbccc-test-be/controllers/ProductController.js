@@ -169,7 +169,7 @@ module.exports.deleteProduct = async (request,response) => {
         Product.findByIdAndDelete(request.params.productId).then((result)=>{
             return response.send({
                 "status":200,
-                "message": "Account deletion successful"
+                "message": "Product deletion successful"
             })
         }).catch(error => {
             return response.send({
