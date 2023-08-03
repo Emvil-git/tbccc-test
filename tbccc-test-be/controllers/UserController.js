@@ -160,7 +160,7 @@ module.exports.adminDeleteAccount = async (request,response) => {
     const authData = auth.decode(request.headers.authorization)
 
     if (authData.isAdmin === true) {
-        User.findByIdAndDelete(request.body.userId).then((result)=>{
+        User.findByIdAndDelete(request.params.userId).then((result)=>{
             return response.send({
                 "status":200,
                 "message": "Account deletion successful"

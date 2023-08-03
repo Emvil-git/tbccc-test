@@ -105,6 +105,7 @@ module.exports.updateProductInfo = (request, response) => {
     }
 }
 
+// For "soft-deleting" products
 module.exports.unlistProduct = (request, response) => {
     const authData = auth.decode(request.headers.authorization);
 
@@ -159,4 +160,27 @@ module.exports.listProduct = (request, response) => {
             "status": 403,
             "message": "This is an ADMIN feature"
         });
+}
+
+module.exports.deleteProduct = async (request,response) => {
+    const authData = auth.decode(request.headers.authorization)
+
+    if (authData.isAdmin === true) {
+        Product.findByIdAndDelete(request.params.prodId).then((result)=>{
+            return response.send({
+                "status":200,
+                "message": "Account deletion successful"
+            })
+        }).catch(error => {
+            return response.send({
+                "status":403,
+                "message": "Incorrect Password or Error deleting Account"
+            })
+        })
+    } else {
+        return response.send({
+            "status":403,
+            "message": "This is an ADMIN-ONLY feature"
+        })
+    }
 }
