@@ -14,7 +14,7 @@ module.exports.verify = (request, response, next) => {
     let token = request.headers.authorisation
     if(typeof token !== "undefined"){ 
         console.log(token);
-        token=token.slice(7, token.length);
+        token=token.slice(7, token.length); // removes "Bearer " from the token string
         return jwt.verify(token, secret, (error, data) =>{
 			if(error){
 				return response.send({

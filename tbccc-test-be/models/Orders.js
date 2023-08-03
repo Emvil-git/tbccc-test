@@ -14,6 +14,10 @@ const orderSchema = new mongoose.Schema(
 			type: String,
 			required: [true, "UserID (Order) required"]
 		},
+        orderStatus: {
+            type: String,
+            required: [true, ""]
+        },
 		products : [
             {
 				_id: false,
