@@ -5,8 +5,8 @@ const Product = require("../models/Product.js");
 
 module.exports.signUp = async (request, response) => {
     let newUser = new User({
-        name: request.body.firstName,
-        username: request.body.lastName,
+        name: request.body.name,
+        username: request.body.username,
         email: request.body.email,
         password: bcrypt.hashSync(request.body.password, 10), //hashes the user's password
     })
