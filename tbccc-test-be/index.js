@@ -5,7 +5,7 @@ const cors = require("cors");
 
 // Route imports
 const userRoutes = require("./routes/userRoutes.js");
-const productRoutes = require("./routes/pserRoutes.js");
+const productRoutes = require("./routes/productRoutes.js");
 
 // Set Up Express
 const app = express();
