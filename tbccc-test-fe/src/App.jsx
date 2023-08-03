@@ -2,6 +2,7 @@ import './App.css';
 import Home from './routes/home/Home';
 import Admin from './routes/admin/Admin';
 import Login from './routes/login/Login';
+import SignUp from './routes/login/SignUp';
 import Navbar from './components/Navbar';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Route, Routes } from 'react-router-dom';
@@ -18,6 +19,7 @@ function App() {
             <Route path="/" element={<Home/>}/>
             <Route path="/admin" element={<Admin/>}/>
             <Route path="/login" element={<Login/>}/>
+            <Route path="/signup" element={<SignUp/>}/>
           </Routes>
         </main>
       </Router>

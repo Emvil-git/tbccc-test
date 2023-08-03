@@ -15,11 +15,13 @@ function Navbar() {
         </h1>
         <div>
             <button
+                onClick={() => {navigate('signup')}}
                 className='border border-slate-50 rounded-full w-24 py-1'
             >
                 Sign Up
             </button>
             <button
+                onClick={() => {navigate('login')}}
                 className='border border-slate-50 bg-slate-50 text-blue-600 rounded-full w-24 py-1 ms-2 shadow-md shadow-color-blue-600'
             >
                 Log In
