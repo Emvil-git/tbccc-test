@@ -1,6 +1,8 @@
 import React from 'react';
 import { Tab } from '@headlessui/react';
 import AdminUserDisclosure from './AdminUserDisclosure';
+import AdminProductDisclosure from './AdminProductDisclosure';
+import AdminOrderDisclosure from './AdminOrderDisclosure';
 
 const classNames = (...classes) => {
   return classes.filter(Boolean).join(' ')
@@ -36,7 +38,7 @@ function Admin() {
                     )}
                 </Tab.List>
             </div>
-            <Tab.Panels className="pt-24 ps-12 pe-24 bg-slate-50 w-full h-full overflow-y-auto">
+            <Tab.Panels className="pt-24 pb-8 ps-12 pe-24 bg-slate-50 w-full h-full overflow-y-auto">
               <Tab.Panel>
                 <div
                     className='w-2/3'
@@ -54,14 +56,28 @@ function Admin() {
               </Tab.Panel>
               <Tab.Panel>
                 <div
+                    className='w-2/3'
                 >
-                    <h3 className='font-medium text-3xl'>Products</h3>
+                    <h3 className='font-medium text-3xl mb-4'>Products</h3>
+                    <div className='flex flex-col gap-2'>
+                        <AdminProductDisclosure/>
+                        <AdminProductDisclosure/>
+                        <AdminProductDisclosure/>
+                        <AdminProductDisclosure/>
+                    </div>
                 </div>
               </Tab.Panel>
               <Tab.Panel>
                 <div
+                className='w-2/3'
                 >
-                    <h3 className='font-medium text-3xl'>Orders</h3>
+                    <h3 className='font-medium text-3xl mb-4'>Orders</h3>
+                    <div className='flex flex-col gap-2'>
+                        <AdminOrderDisclosure/>
+                        <AdminOrderDisclosure/>
+                        <AdminOrderDisclosure/>
+                        <AdminOrderDisclosure/>
+                    </div>
                 </div>
               </Tab.Panel>
             </Tab.Panels>
