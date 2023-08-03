@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Tab } from '@headlessui/react';
 import AdminUserDisclosure from './AdminUserDisclosure';
 import AdminProductDisclosure from './AdminProductDisclosure';
 import AdminOrderDisclosure from './AdminOrderDisclosure';
+import { useAppContext } from '../../context/appContext';
 
 const classNames = (...classes) => {
   return classes.filter(Boolean).join(' ')
@@ -11,6 +12,12 @@ const classNames = (...classes) => {
 function Admin() {
     
     const tabList = ["Users", "Products", "Orders"]
+
+    const {products, getListedProducts} = useAppContext();
+
+    useEffect(()=>{
+        getListedProducts()
+    },[])
 
   return (
         <Tab.Group
@@ -60,10 +67,7 @@ function Admin() {
                 >
                     <h3 className='font-medium text-3xl mb-4'>Products</h3>
                     <div className='flex flex-col gap-2'>
-                        <AdminProductDisclosure/>
-                        <AdminProductDisclosure/>
-                        <AdminProductDisclosure/>
-                        <AdminProductDisclosure/>
+                        {products.map(product => <AdminProductDisclosure product={product}/>)}
                     </div>
                 </div>
               </Tab.Panel>
