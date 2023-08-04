@@ -37,6 +37,7 @@ function ProductModal() {
 
         if (user === null) {
             navigate('/login');
+            setIsShowProductModal(false);
         } else {
             const token = localStorage.getItem('token')
 
