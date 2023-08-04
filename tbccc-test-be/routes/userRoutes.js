@@ -14,7 +14,7 @@ router.patch("/updateInfo", userController.updateUserInfo);
 router.patch("/changePass", userController.changeUserPassword);
 // Delete
 router.delete("/deleteUser", userController.deleteUserAccount);
-router.delete("/adminDeleteUser", userController.adminDeleteAccount);
+router.delete("/adminDeleteUser/:userId", userController.adminDeleteAccount);
 
 // Login
 router.post("/logIn", userController.logIn);

@@ -38,17 +38,55 @@ function AdminProductDisclosure({product}) {
         })
     }
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        setIsEditing(false)
-    }
-
     const handleEdit = (event) => {
         event.preventDefault();
         setIsEditing(true)
     }
-
     
+    const handleUnlist = (ev) => {
+        ev.preventDefault();
+    
+        fetch(`http://localhost:4000/products/unlist/${product._id}`, {
+            method: "PATCH",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+        })
+        .then(res => res.json())
+        .then(data => {
+            adminGetProducts(localStorage.getItem('token'))
+        })
+    }
+
+    const handleRelist = (ev) => {
+        ev.preventDefault();
+    
+        fetch(`http://localhost:4000/products/list/${product._id}`, {
+            method: "PATCH",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+        })
+        .then(res => res.json())
+        .then(data => {
+            adminGetProducts(localStorage.getItem('token'))
+        })
+    }
+
+    const handleDelete = (ev) => {
+        ev.preventDefault();
+    
+        fetch(`http://localhost:4000/products/delete/${product._id}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+        })
+        .then(res => res.json())
+        .then(data => {
+            adminGetProducts(localStorage.getItem('token'))
+        })
+    }
 
   return (
     <Disclosure
@@ -57,7 +95,7 @@ function AdminProductDisclosure({product}) {
     >
         <Disclosure.Button className="py-3 px-6 flex flex-col bg-white z-20 w-full">
             <span className='text-blue-700'>{product.productName}</span>
-            <span className='text-sm text-slate-400'>{product._id}</span>
+            <span className={`text-sm ${product.isListed ? "text-green-400" : "text-red-400"}`}>{product.isListed ? 'Listed' : 'Unlisted'}</span>
         </Disclosure.Button>
         <Disclosure.Panel
         as='form'
@@ -133,13 +171,24 @@ function AdminProductDisclosure({product}) {
                         Edit Info
                     </button>
                 }
-                <button
-                    className='border border-slate-800 text-slate-800 text-slate-50 rounded-md px-4 py-1 mt-2 mb-2'
-                >
-                    Unlist Item
-                </button>
+                {product.isListed ? 
+                    <button
+                        className='border border-slate-800 text-slate-800 text-slate-50 rounded-md px-4 py-1 mt-2 mb-2'
+                        onClick={handleUnlist}
+                    >
+                        Unlist Item
+                    </button> : 
+                    <button
+                        className='border border-slate-800 text-slate-800 text-slate-50 rounded-md px-4 py-1 mt-2 mb-2'
+                        onClick={handleRelist}
+                    >
+                        Re-list Item
+                    </button>
+                    
+                }
                 <button
                     className='border border-red-500 text-red-500 text-slate-50 rounded-md px-4 py-1 mt-2 mb-2 ms-auto'
+                    onClick={handleDelete}
                 >
                     Delete Item
                 </button>

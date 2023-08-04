@@ -1,7 +1,27 @@
 import React from 'react'
 import { Disclosure } from '@headlessui/react'
+import { useAppContext } from '../../context/appContext'
 
 function AdminUserDisclosure({userData}) {
+
+    const{adminGetUsers} = useAppContext();
+
+    
+    const handleDelete = (ev) => {
+        ev.preventDefault();
+    
+        fetch(`http://localhost:4000/users/adminDeleteUser/${userData._id}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+        })
+        .then(res => res.json())
+        .then(data => {
+            adminGetUsers(localStorage.getItem('token'))
+        })
+    }
+
   return (
     <Disclosure
         as="div"
@@ -22,6 +42,7 @@ function AdminUserDisclosure({userData}) {
             </section>
             <button
                 className='border border-red-500 text-red-500 text-slate-50 rounded-md px-4 py-1 mt-2 mb-2'
+                onClick={handleDelete}
             >
                 Delete User Account
             </button>
