@@ -9,7 +9,7 @@ export const AppContextProvider = ({children}) => {
 
     // variables that control UI state
     const [isShowProductModal, setIsShowProductModal] = useState(false);
-    const [isShowAddProductModal, setIsShowAddProductModal] = useState(true);
+    const [isShowAddProductModal, setIsShowAddProductModal] = useState(false);
 
     // customer-available data
     const [users, setUsers] = useState([]);

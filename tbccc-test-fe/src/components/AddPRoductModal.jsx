@@ -41,7 +41,13 @@ function AddProductModal() {
       })
       .then(data => {
             if (data) {
+                setPName('');
+                setPDesc('');
+                setPImgUrl('');
+                setPPrice();
+                setPQuant('');
                 adminGetProducts(localStorage.getItem('token'));
+                setIsShowAddProductModal(false)
             }
         })
     }

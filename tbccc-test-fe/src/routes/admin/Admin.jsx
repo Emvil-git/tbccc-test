@@ -14,7 +14,7 @@ function Admin() {
     
     const tabList = ["Users", "Products", "Orders"]
 
-    const {token, user, adminUsers, adminProducts, adminGetProducts, adminGetUsers} = useAppContext();
+    const {token, user, adminUsers, adminProducts, adminGetProducts, adminGetUsers, setIsShowAddProductModal} = useAppContext();
     const navigate = useNavigate();
 
     useEffect(()=>{
@@ -29,6 +29,11 @@ function Admin() {
             adminGetProducts(token);
         }
     },[]);
+
+    const showAddProductModal = (event) => {
+        event.preventDefault();
+        setIsShowAddProductModal(true);
+    }
 
   return (
         <Tab.Group
@@ -71,7 +76,14 @@ function Admin() {
                 <div
                     className='w-2/3'
                 >
-                    <h3 className='font-medium text-3xl mb-4'>Products</h3>
+                    <div className='flex justify-between mb-4'>
+                        <h3 className='font-medium text-3xl'>Products</h3>
+                        <button className='bg-blue-500 text-slate-50 p-2 px-6 rounded-lg shadow-md hover:ring-4 hover:ring-blue-500/50 transition duration-500 ease-out -translate-y-1'
+                            onClick={showAddProductModal}
+                        >
+                            Add new Product
+                        </button>
+                    </div>
                     <div className='flex flex-col gap-2'>
                         {adminProducts.map(product => <AdminProductDisclosure product={product}/>)}
                     </div>

@@ -9,6 +9,7 @@ function ProductModal() {
 
     const handleClose = (event) => {
         event.preventDefault();
+        setQuantity(0)
         setIsShowProductModal(false)
     }
 

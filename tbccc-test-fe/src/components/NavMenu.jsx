@@ -78,7 +78,7 @@ function NavMenu({userData}) {
                             <Menu.Item>
                                 {({ active }) => (
                                     <a
-                                        className={`${active && 'bg-blue-500'}`}
+                                        className={classNames(' rounded p-2 transition-all', active && 'bg-blue-100 pe-4')}
                                         href="/account-settings"
                                     >
                                         Cart
@@ -88,7 +88,7 @@ function NavMenu({userData}) {
                             <Menu.Item>
                                 {({ active }) => (
                                     <a
-                                        className={`${active && 'bg-blue-500'}`}
+                                        className={classNames(' rounded p-2 transition-all', active && 'bg-blue-100 pe-4')}
                                         href="/account-settings"
                                     >
                                         Profile
@@ -98,7 +98,7 @@ function NavMenu({userData}) {
                             <Menu.Item>
                                 {({ active }) => (
                                     <a
-                                        className={`${active && 'bg-blue-500'}`}
+                                        className={classNames(' rounded p-2 transition-all', active && 'bg-blue-100 pe-4')}
                                         onClick={handleLogOut}
                                     >
                                         Log Out
