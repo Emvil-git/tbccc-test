@@ -20,10 +20,11 @@ router.delete("/adminDeleteUser", userController.adminDeleteAccount);
 router.post("/logIn", userController.logIn);
 
 // Cart Endpoint
-router.post("cart/add", userController.addToCart);
-router.patch("cart/updateItemQty", userController.updateProductCartQuantity);
-router.patch("cart/removeItem", userController.removeFromCart);
-router.get("cart/getSubtotal/:productId", userController.getItemSubtotal);
-router.get("cart/getTotal", userController.getCartTotal);
+router.put("/cart/add", userController.addToCart);
+router.patch("/cart/updateItemQty", userController.updateProductCartQuantity);
+router.patch("/cart/removeItem", userController.removeFromCart);
+router.get("/cart/getSubtotal/:productId", userController.getItemSubtotal);
+router.get("/cart/getTotal", userController.getCartTotal);
+
 
 module.exports = router;

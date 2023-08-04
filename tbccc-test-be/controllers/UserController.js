@@ -224,24 +224,22 @@ module.exports.addToCart = async (request, response) => {
                 })
             });
 
-            if (!product || !product.isListed || !product.stocks || product.stocks - quantity <= 0){
+            if (!product || !product.isListed || !product.productQuantity || product.productQuantity - quantity <= 0){
                 return response.send({
                     "status":500,
                     "message":"Product can't be added to cart"
                 })
             } else {
-                const index = user.cart.map(item => item.productId).indexOf(product.id);
+                const index = user.userCart.map(item => item.productId).indexOf(product.id);
 
                 if (index === -1) {
-                    user.cart.push({
+                    user.userCart.push({
                         productId: productId,
                         quantity: quantity,
-                        subTotal: product.price * quantity
                     });
                     
                 } else {
-                    user.cart[index].quantity += quantity;
-                    user.cart[index].subTotal = product.price * quantity;
+                    user.userCart[index].quantity += quantity;
                 }
 
                 user.save();

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { classNames } from './Admin';
+import { useAppContext } from '../../context/appContext';
 
 function AdminProductDisclosure({product}) {
 
@@ -9,6 +10,33 @@ function AdminProductDisclosure({product}) {
     const [pDesc, setPDesc] = useState(product.description);
     const [pPrice, setPPrice] = useState(product.price);
     const [pStocks, setPStocks] = useState(product.productQuantity);
+
+    const {adminGetProducts} = useAppContext();
+
+    const handleProductUpdate = (ev) => {
+        ev.preventDefault();
+
+        const token = localStorage.getItem('token');
+
+        fetch(`http://localhost:4000/products/updateInfo/${product._id}`, {
+            method: "PATCH",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify({
+                productName: pName,
+                description: pDesc,
+                price: pPrice,
+                productQuantity: pStocks
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            setIsEditing(false);
+            adminGetProducts(token);        
+        })
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -19,6 +47,8 @@ function AdminProductDisclosure({product}) {
         event.preventDefault();
         setIsEditing(true)
     }
+
+    
 
   return (
     <Disclosure
@@ -91,7 +121,7 @@ function AdminProductDisclosure({product}) {
             <div className='flex'> 
                 {
                     isEditing ? <button
-                        onClick={handleSubmit}
+                        onClick={handleProductUpdate}
                         className='border border-slate-800 bg-slate-800 text-slate-50 text-slate-50 rounded-md px-4 py-1 mt-2 mb-2 me-2'
                     >
                         Update Info

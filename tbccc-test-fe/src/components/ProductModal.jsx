@@ -1,15 +1,67 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Transition } from '@headlessui/react';
 import { useAppContext } from '../context/appContext';
 import { XMarkIcon, PlusSmallIcon, MinusSmallIcon } from "@heroicons/react/20/solid"
 
 function ProductModal() {
-    const {isShowProductModal, setIsShowProductModal, selectedProduct, user} = useAppContext();
+    const {isShowProductModal, setIsShowProductModal, selectedProduct, user, getListedProducts, refreshUserDetails} = useAppContext();
     const [quantity, setQuantity] = useState(0);
 
     const handleClose = (event) => {
         event.preventDefault();
         setIsShowProductModal(false)
+    }
+
+    const increaseQuantity = (event) => {
+        event.preventDefault();
+
+        if(quantity < selectedProduct.productQuantity) {
+            setQuantity(quantity + 1);
+        }
+    }
+
+    const decreaseQuantity = (event) => {
+        event.preventDefault();
+        
+        if(quantity !== 0) {
+            setQuantity(quantity - 1);
+        }
+    }
+
+    const handleAddToCart = (ev) => {
+        ev.preventDefault();
+
+        if (user === null) {
+            navigate('/login');
+        } else {
+            const token = localStorage.getItem('token')
+
+            console.log(token)
+
+            fetch('http://localhost:4000/users/cart/add', {
+              method: "PUT",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+              body:JSON.stringify(
+                {
+                    productId: selectedProduct._id,
+                    quantity: quantity,
+                }
+              )
+            })
+            .then(res => {
+                console.log(res)
+                console.log('wee')
+                return res.json()
+            })
+            .then(data => {
+              refreshUserDetails(token);
+              getListedProducts();
+              setQuantity(0)
+            })
+        }
     }
 
   return (
@@ -59,24 +111,32 @@ function ProductModal() {
                                 
                                 <div className='grid grid-cols-2 mb-3'>
                                     <div className="flex w-full justify-center gap-1">
-                                        <button className='bg-blue-300 p-1 rounded-lg  shadow shadow-sky-600/25 w-2/6'>
+                                        <button className='bg-blue-300 p-1 rounded-lg  shadow shadow-sky-600/25 w-2/6'
+                                        onClick={decreaseQuantity}
+                                        >
                                             <MinusSmallIcon className='h-8 w-full'/>
                                         </button>
-                                        <span className="bg-slate-50 rounded-lg flex justify-center items-center text-xl w-2/4 shadow-inner shadow-sky-700/25 font-bold">9</span>
-                                        <button className='bg-blue-300 p-1 rounded-lg shadow shadow-sky-600/25 w-2/6'>
+                                        <span className="bg-slate-50 rounded-lg flex justify-center items-center text-xl w-2/4 shadow-inner shadow-sky-700/25 ">
+                                            {quantity}
+                                        </span>
+                                        <button className='bg-blue-300 p-1 rounded-lg shadow shadow-sky-600/25 w-2/6'
+                                        onClick={increaseQuantity}
+                                        >
                                             <PlusSmallIcon className='h-8 w-full'/>
                                         </button>
                                     </div>
                                     <section className='my- me-4 text-right'>
                                         <p className='text-blue-400 text-xs'>Subtotal</p>
-                                        <p className='text-2xl -mt-1'>900</p>
+                                        <p className='text-2xl font-bold -mt-1'>{quantity * selectedProduct.price}</p>
                                     </section>
                                 </div>
-                                <button className='w-full bg-blue-500 rounded-lg text-lg text-slate-50 h-12 shadow-lg shadow-sky-600/25'>Add To Cart</button>
+                                <button className='w-full bg-blue-500 rounded-lg text-lg text-slate-50 h-12 shadow-lg shadow-sky-600/25'
+                                    onClick={handleAddToCart}
+                                >Add To Cart</button>
                                 
                             </div> :
-                            <div className="product__add-section d-flex justify-content-end py-3 bg-light">
-                                <h6>*YOU CANNOT BUY PRODUCTS AS AN ADMIN</h6>
+                            <div className="w-full text-center text-slate-400">
+                                <h6>Only Customers can purchase items</h6>
                             </div>
                         }
                     </div>

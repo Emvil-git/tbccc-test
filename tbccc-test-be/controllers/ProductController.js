@@ -88,10 +88,10 @@ module.exports.updateProductInfo = (request, response) => {
 
     if (authData.isAdmin === true) {
         return Product.findByIdAndUpdate(productId, {
-            name: product.name,
+            name: product.productName,
             description: product.description,
             price: product.price,
-            stocks: product.stocks
+            productQuantity: product.productQuantity
         })
         .then((result, error) => {
             if (error) response.send(error);
