@@ -7,8 +7,13 @@ import { useNavigate } from 'react-router-dom';
 function NavMenu({userData}) {
 
     const [isHover, setIsHover] = useState(false);
-    const {setUser} = useAppContext();
+    const {setUser, setIsShowProfileModal} = useAppContext();
     const navigate = useNavigate();
+
+    const showProfileModal = (event) => {
+        event.preventDefault();
+        setIsShowProfileModal(true);
+    } 
 
     const handleLogOut = (event) => {
         event.preventDefault();
@@ -57,8 +62,8 @@ function NavMenu({userData}) {
                             <Menu.Item>
                                 {({ active }) => (
                                     <a
-                                        className={classNames(' rounded p-2 transition-all', active && 'bg-blue-100 pe-4')}
-                                        href="/admin"
+                                        className={classNames(' rounded p-2 transition-all cursor-pointer', active && 'bg-blue-100 pe-4')}
+                                        onClick={showProfileModal}
                                     >
                                         User Profile
                                     </a>
@@ -89,7 +94,7 @@ function NavMenu({userData}) {
                                 {({ active }) => (
                                     <a
                                         className={classNames(' rounded p-2 transition-all', active && 'bg-blue-100 pe-4')}
-                                        href="/account-settings"
+                                        onClick={showProfileModal}
                                     >
                                         Profile
                                     </a>

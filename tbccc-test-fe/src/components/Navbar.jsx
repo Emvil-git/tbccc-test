@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../context/appContext';
 import NavMenu from './NavMenu';
+import ProfileModal from './ProfileModal';
 
 function Navbar() {
     const navigate = useNavigate();
@@ -34,6 +35,7 @@ function Navbar() {
             </>
             }
         </div>
+        {user && <ProfileModal/>}
     </nav>
   )
 }

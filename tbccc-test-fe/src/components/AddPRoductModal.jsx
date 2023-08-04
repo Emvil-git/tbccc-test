@@ -45,7 +45,7 @@ function AddProductModal() {
                 setPDesc('');
                 setPImgUrl('');
                 setPPrice();
-                setPQuant('');
+                setPQuant();
                 adminGetProducts(localStorage.getItem('token'));
                 setIsShowAddProductModal(false)
             }

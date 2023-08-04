@@ -10,6 +10,7 @@ export const AppContextProvider = ({children}) => {
     // variables that control UI state
     const [isShowProductModal, setIsShowProductModal] = useState(false);
     const [isShowAddProductModal, setIsShowAddProductModal] = useState(false);
+    const [isShowProfileModal, setIsShowProfileModal] = useState(false);
 
     // customer-available data
     const [users, setUsers] = useState([]);
@@ -67,7 +68,7 @@ export const AppContextProvider = ({children}) => {
     }
 
     return (
-        <AppContext.Provider value={{isShowProductModal, setIsShowProductModal, user, setUser, token, setToken, users, setUsers, products, setProducts, orders, setOrders, selectedProduct, setSelectedProduct, adminUsers, setAdminUsers, adminProducts, setAdminProducts, adminOrders, setAdminOrders, refreshUserDetails, getListedProducts, adminGetUsers,adminGetProducts, isShowAddProductModal, setIsShowAddProductModal}}>
+        <AppContext.Provider value={{isShowProductModal, setIsShowProductModal, user, setUser, token, setToken, users, setUsers, products, setProducts, orders, setOrders, selectedProduct, setSelectedProduct, adminUsers, setAdminUsers, adminProducts, setAdminProducts, adminOrders, setAdminOrders, refreshUserDetails, getListedProducts, adminGetUsers,adminGetProducts, isShowAddProductModal, setIsShowAddProductModal, isShowProfileModal, setIsShowProfileModal}}>
             {children}
         </AppContext.Provider>
     )
