@@ -40,7 +40,6 @@ function Login() {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
             localStorage.setItem('token', userToken);
             localStorage.setItem('user',JSON.stringify(data));
             setToken(userToken)

@@ -4,6 +4,7 @@ import AdminUserDisclosure from './AdminUserDisclosure';
 import AdminProductDisclosure from './AdminProductDisclosure';
 import AdminOrderDisclosure from './AdminOrderDisclosure';
 import { useAppContext } from '../../context/appContext';
+import { useNavigate } from 'react-router-dom';
 
 export const classNames = (...classes) => {
   return classes.filter(Boolean).join(' ')
@@ -13,11 +14,21 @@ function Admin() {
     
     const tabList = ["Users", "Products", "Orders"]
 
-    const {products, getListedProducts} = useAppContext();
+    const {token, user, adminUsers, adminProducts, adminGetProducts, adminGetUsers} = useAppContext();
+    const navigate = useNavigate();
 
     useEffect(()=>{
-        getListedProducts()
-    },[])
+        if (!user || !user.isAdmin) {
+            navigate('/')
+        }
+    },[]);
+
+    useEffect(()=>{
+       if (user.isAdmin) {
+            adminGetUsers(token);
+            adminGetProducts(token);
+        }
+    },[]);
 
   return (
         <Tab.Group
@@ -52,12 +63,7 @@ function Admin() {
                 >
                     <h3 className='font-medium text-3xl mb-4'>Users</h3>
                     <div className='flex flex-col gap-2'>
-                        <AdminUserDisclosure/>
-                        <AdminUserDisclosure/>
-                        <AdminUserDisclosure/>
-                        <AdminUserDisclosure/>
-                        <AdminUserDisclosure/>
-                        <AdminUserDisclosure/>
+                        {adminUsers.map(user => <AdminUserDisclosure userData={user}/>)}
                     </div>
                 </div>
               </Tab.Panel>
@@ -67,7 +73,7 @@ function Admin() {
                 >
                     <h3 className='font-medium text-3xl mb-4'>Products</h3>
                     <div className='flex flex-col gap-2'>
-                        {products.map(product => <AdminProductDisclosure product={product}/>)}
+                        {adminProducts.map(product => <AdminProductDisclosure product={product}/>)}
                     </div>
                 </div>
               </Tab.Panel>

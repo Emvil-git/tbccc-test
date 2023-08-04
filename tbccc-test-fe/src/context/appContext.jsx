@@ -22,8 +22,32 @@ export const AppContextProvider = ({children}) => {
             setProducts(data)})
     }
 
+    const adminGetProducts = (userToken) => {
+        fetch('http://localhost:4000/products/getAllProducts', {
+            headers: {
+                Authorization: `Bearer ${userToken}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            setAdminProducts(data);
+        })
+    }
+
+    const adminGetUsers = (userToken) => {
+        fetch('http://localhost:4000/users/getAll', {
+            headers: {
+                Authorization: `Bearer ${userToken}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            setAdminUsers(data);
+        })
+    }
+
     return (
-        <AppContext.Provider value={{user, setUser, token, setToken, users, setUsers, products, setProducts, orders, setOrders, adminUsers, setAdminUsers, adminProducts, setAdminProducts, adminOrders, setAdminOrders, getListedProducts}}>
+        <AppContext.Provider value={{user, setUser, token, setToken, users, setUsers, products, setProducts, orders, setOrders, adminUsers, setAdminUsers, adminProducts, setAdminProducts, adminOrders, setAdminOrders, getListedProducts, adminGetUsers,adminGetProducts}}>
             {children}
         </AppContext.Provider>
     )
