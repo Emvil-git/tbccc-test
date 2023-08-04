@@ -61,8 +61,7 @@ module.exports.getUserInfo = (request, response) => {
     const userData = auth.decode(request.headers.authorization);
 
 	return User.findById(userData.id).then(result =>{
-		result.password = "*******";
-		response.send(result);
+		response.send({username, name, isAdmin, email, userCart} = result);
 	}).catch(err => response.send(err));
 }
 

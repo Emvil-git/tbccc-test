@@ -1,9 +1,14 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../../context/appContext';
 
 function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const navigate = useNavigate();
+    const {setUser, setToken} = useAppContext();
 
     const handleLogin = async (ev) => {
         ev.preventDefault();
@@ -18,13 +23,31 @@ function Login() {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
-            console.log(data.access)
+            if(data) {
+                getUserData(data.access)
+            }
         })
 
         setEmail('');
         setPassword('');
-    }  
+    } 
+
+    const getUserData = (userToken) => {
+        fetch('http://localhost:4000/users/getInfo', {
+            headers: {
+                Authorization: `Bearer ${userToken}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            localStorage.setItem('token', userToken);
+            localStorage.setItem('user',JSON.stringify(data));
+            setToken(userToken)
+            setUser(data);
+            (data.isAdmin) ? navigate('/admin') : navigate('/')
+        })
+    }
     
   return (
     <div className='grid place-content-center w-full h-full -mt-16'>

@@ -5,6 +5,7 @@ export const AppContext = createContext();
 export const AppContextProvider = ({children}) => {
 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+    const [token, setToken] = useState(localStorage.getItem('token'));
 
     const [users, setUsers] = useState([]);
     const [products, setProducts] = useState([]);
@@ -22,7 +23,7 @@ export const AppContextProvider = ({children}) => {
     }
 
     return (
-        <AppContext.Provider value={{user, setUser, users, setUsers, products, setProducts, orders, setOrders, adminUsers, setAdminUsers, adminProducts, setAdminProducts, adminOrders, setAdminOrders, getListedProducts}}>
+        <AppContext.Provider value={{user, setUser, token, setToken, users, setUsers, products, setProducts, orders, setOrders, adminUsers, setAdminUsers, adminProducts, setAdminProducts, adminOrders, setAdminOrders, getListedProducts}}>
             {children}
         </AppContext.Provider>
     )
