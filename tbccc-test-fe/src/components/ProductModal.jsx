@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { Transition } from '@headlessui/react';
 import { useAppContext } from '../context/appContext';
-import { XMarkIcon, PlusSmallIcon, MinusSmallIcon } from "@heroicons/react/20/solid"
+import { XMarkIcon, PlusSmallIcon, MinusSmallIcon } from "@heroicons/react/20/solid";
+import { useNavigate } from 'react-router-dom';
 
 function ProductModal() {
     const {isShowProductModal, setIsShowProductModal, selectedProduct, user, getListedProducts, refreshUserDetails} = useAppContext();
     const [quantity, setQuantity] = useState(0);
+
+    const navigate = useNavigate();
 
     const handleClose = (event) => {
         event.preventDefault();
