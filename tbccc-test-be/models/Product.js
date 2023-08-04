@@ -23,6 +23,10 @@ const productSchema = new mongoose.Schema(
 			required: [true, "Quantity (Product) is required"]
 		},
 
+		imgUrl : {
+			type: String
+		},
+
         isListed: {
 			type: Boolean,
 			default: true
