@@ -10,6 +10,7 @@ module.exports.createProduct = (request, response) => {
             {
                 productName: request.body.productName,
                 description: request.body.description,
+                imgUrl: request.body.imgUrl,
                 price: request.body.price,
 				productQuantity: request.body.productQuantity
             }

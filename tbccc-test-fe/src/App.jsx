@@ -8,6 +8,7 @@ import ProductModal from './components/ProductModal';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Route, Routes } from 'react-router-dom';
 import { AppContextProvider } from './context/appContext';
+import AddProductModal from './components/AddPRoductModal';
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
             <Route path="/signup" element={<SignUp/>}/>
           </Routes>
           <ProductModal/>
+          <AddProductModal/>
         </main>
       </Router>
     </AppContextProvider>
