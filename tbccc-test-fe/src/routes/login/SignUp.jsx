@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/appContext';
 
@@ -11,7 +11,13 @@ function SignUp() {
     const [uPassword, setUPassword] = useState("");
     const [uPassword2, setUPassword2] = useState("");
 
-    const { user, setUser } = useAppContext();
+    const { user ,setToken, setUser } = useAppContext();
+
+    useEffect(() => {
+        if(user) {
+            navigate('/')
+        }
+    })
 
     const checkUsername = () => {
         fetch(`https://capstone-2-villanueva.onrender.com/users/checkEmail`, {
@@ -51,9 +57,41 @@ function SignUp() {
                 password: uPassword
                 })
             })
-            .then(res => {
+            .then(async res => {
                 if (res.status === 200) {
-                    navigate('/')
+                    await fetch(`http://localhost:4000/users/login`, {
+                        method: "POST",
+                        headers: {"Content-type": "application/json"},
+                        body: JSON.stringify({
+                        email: uEmail,
+                        password: uPassword
+                        })
+                    })
+                    .then(res => res.json())
+                    .then( async data => {
+                        if(data) {
+                            console.log(data)
+                            const newToken = data.access;
+
+                            await fetch('http://localhost:4000/users/getInfo', {
+                                headers: {
+                                    Authorization: `Bearer ${newToken}`
+                                }
+                            })
+                            .then(res => {
+                                console.log(res)
+                                return res.json()
+                            })
+                            .then(data => {
+                                console.log(data)
+                                localStorage.setItem('token', newToken);
+                                localStorage.setItem('user',JSON.stringify(data));
+                                setToken(newToken)
+                                setUser(data);
+                                (data.isAdmin) ? navigate('/admin') : navigate('/')
+                            })
+                        }
+                    })
                 }
                 })
             } else {
@@ -77,6 +115,7 @@ function SignUp() {
         })
     }
 
+    
   return (
     <div className='grid place-content-center w-full h-full -mt-16'>
         <form onSubmit={checkAndRegister}
@@ -140,7 +179,7 @@ function SignUp() {
                     />
             </section>
 
-            <p className='text-sm ps-1'>Already have an account? <a href="">Log in</a> instead.</p>
+            <p className='text-sm ps-1'>Already have an account? <a href="/login" className='text-blue-500 hover:text-blue-700'>Log in</a> instead.</p>
             <button
                 className='bg-blue-500 text-xl text-slate-50 w-1/2 py-3 rounded-lg mt-3 mb-2 shadow-md transition hover:shadow-none hover:bg-blue-400 ease-out'
                 type='submit'

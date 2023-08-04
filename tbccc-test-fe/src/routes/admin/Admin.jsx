@@ -14,8 +14,9 @@ function Admin() {
     
     const tabList = ["Users", "Products", "Orders"]
 
-    const {token, user, adminUsers, adminProducts, adminGetProducts, adminGetUsers, setIsShowAddProductModal} = useAppContext();
+    const { user, adminUsers, adminProducts, adminGetProducts, adminGetUsers, setIsShowAddProductModal} = useAppContext();
     const navigate = useNavigate();
+    const token = localStorage.getItem('token')
 
     useEffect(()=>{
         if (!user || !user.isAdmin) {

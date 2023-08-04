@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/appContext';
 
@@ -8,7 +8,13 @@ function Login() {
     const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
-    const {setUser, setToken} = useAppContext();
+    const {user ,setUser, setToken} = useAppContext();
+
+    useEffect(() => {
+        if(user) {
+            navigate('/')
+        }
+    })
 
     const handleLogin = async (ev) => {
         ev.preventDefault();
@@ -76,7 +82,7 @@ function Login() {
                     />
             </section>
 
-            <p className='text-sm ps-1'>Don't have an account? <a href="">Register</a> for free!</p>
+            <p className='text-sm ps-1'>Don't have an account? <a href="/signup" className='text-blue-500 hover:text-blue-700'>Register</a> for free!</p>
             <button
                 onClick={handleLogin}
                 className='bg-blue-500 text-xl text-slate-50 w-1/2 py-3 rounded-lg mt-3 mb-2 shadow-md transition hover:shadow-none hover:bg-blue-400 ease-out'

@@ -17,10 +17,10 @@ function NavMenu({userData}) {
 
     const handleLogOut = (event) => {
         event.preventDefault();
-        navigate('/');
         setUser(null);
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        navigate('/login');
     } 
 
   return (
