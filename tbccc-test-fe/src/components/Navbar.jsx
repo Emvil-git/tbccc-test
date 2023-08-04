@@ -8,7 +8,7 @@ function Navbar() {
     const {user, setUser} = useAppContext();
 
   return (
-    <nav className='bg-blue-500 text-slate-50 w-full h-16 flex justify-between items-center px-12 shadow-lg shadow-color-slate-100 relative z-50 sticky top-0'>
+    <nav className='bg-blue-500 text-slate-50 w-full h-16 flex justify-between items-center px-12 shadow-lg shadow-color-slate-100 relative z-30 sticky top-0'>
         <h1
             className='text-lg drop-shadow cursor-pointer hover:scale-110 transition ease-out duration-250'
             onClick={() => navigate('/')}

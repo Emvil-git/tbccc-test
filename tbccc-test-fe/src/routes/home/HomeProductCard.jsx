@@ -1,9 +1,17 @@
 import React, { useState } from 'react'
 import { Transition } from '@headlessui/react'
 import { ShoppingBagIcon } from "@heroicons/react/24/solid"
+import { useAppContext } from '../../context/appContext';
 
 function HomeProductCard({productData}) {
-    const [isHover, setIsHover] = useState(false)
+    const [isHover, setIsHover] = useState(false);
+    const {setIsShowProductModal, setSelectedProduct} = useAppContext();
+
+    const handleShop = (event) => {
+        event.preventDefault();
+        setSelectedProduct(productData);
+        setIsShowProductModal(true);
+    }
 
   return (
     <div className='bg-white shadow-lg shadow-slate-200 h-min rounded-xl pt-4 ring-0 hover:ring-4 hover:ring-blue-500/25 duration-500 hover:shadow-none transition-all overflow-hidden'>
@@ -28,7 +36,10 @@ function HomeProductCard({productData}) {
                 leaveFrom="opacity-100 translate-x-0"
                 leaveTo="opacity-0 translate-x-4"
             >
-                <button className='p-2 px-4 bg-blue-500 rounded-full shadow-md flex text-slate-50 hover:bg-blue-400 transition ease-out duration-500 hover:shadow'>
+                <button
+                    className='p-2 px-4 bg-blue-500 rounded-full shadow-md flex text-slate-50 hover:bg-blue-400 transition ease-out duration-500 hover:shadow'
+                    onClick={handleShop}
+                >
                     <ShoppingBagIcon className='h-5 me-2'/>
                     Shop
                 </button>

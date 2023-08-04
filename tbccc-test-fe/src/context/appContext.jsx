@@ -7,10 +7,16 @@ export const AppContextProvider = ({children}) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
     const [token, setToken] = useState(localStorage.getItem('token'));
 
+    // variables that control UI state
+    const [isShowProductModal, setIsShowProductModal] = useState(false);
+
+    // customer-available data
     const [users, setUsers] = useState([]);
     const [products, setProducts] = useState([]);
     const [orders, setOrders] = useState([]);
+    const [selectedProduct, setSelectedProduct] = useState();
 
+    // admin-only data
     const [adminUsers, setAdminUsers] = useState([]);
     const [adminProducts, setAdminProducts] = useState([]);
     const [adminOrders, setAdminOrders] = useState([]);
@@ -47,7 +53,7 @@ export const AppContextProvider = ({children}) => {
     }
 
     return (
-        <AppContext.Provider value={{user, setUser, token, setToken, users, setUsers, products, setProducts, orders, setOrders, adminUsers, setAdminUsers, adminProducts, setAdminProducts, adminOrders, setAdminOrders, getListedProducts, adminGetUsers,adminGetProducts}}>
+        <AppContext.Provider value={{isShowProductModal, setIsShowProductModal, user, setUser, token, setToken, users, setUsers, products, setProducts, orders, setOrders, selectedProduct, setSelectedProduct, adminUsers, setAdminUsers, adminProducts, setAdminProducts, adminOrders, setAdminOrders, getListedProducts, adminGetUsers,adminGetProducts}}>
             {children}
         </AppContext.Provider>
     )
